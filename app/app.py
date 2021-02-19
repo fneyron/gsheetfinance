@@ -1,14 +1,19 @@
-import pandas as pd
 import yfinance as yf
-from flask import Flask, request, jsonify
+import pandas as pd
+from flask import Flask, request, jsonify, make_response
 app = Flask(__name__)
 
 
 @app.route('/<share>/holders/', methods=['GET'])
 def holders(share):
-    tickers = yf.Ticker('aapl')
-    df = tickers.major_holders
-    return df
+    tick = yf.Ticker('aapl')
+    df = tick.major_holders
+
+    output = make_response(df.to_csv(header=False, index=False))
+    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-type"] = "text/csv"
+
+    return output
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
