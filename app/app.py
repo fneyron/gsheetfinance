@@ -1,7 +1,7 @@
 import yfinance as yf
 from yahoofinancials import YahooFinancials
 import pandas as pd
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, render_template
 app = Flask(__name__)
 
 
@@ -41,5 +41,4 @@ def yahoofinancials(share):
 
 @app.route('/')
 def index():
-    return "<h1>YFinance-App</h1>" \
-           "<div>Do the same as rapid-api but for free :)</div>"
+    return render_template('index.html')
