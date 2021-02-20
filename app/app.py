@@ -4,7 +4,6 @@ import pandas as pd
 from flask import Flask, request, jsonify, make_response, render_template
 app = Flask(__name__)
 
-
 @app.route('/yfinance/<option>/<share>/', methods=['GET'])
 def yfinance(option, share):
 
