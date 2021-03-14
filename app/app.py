@@ -34,6 +34,8 @@ def financials(share):
     datas = income_statement_data_qt[data[type]][share]
     datas = [dict(x[y], **{'Date': y}) for x in datas for y in x]
     df = pd.DataFrame(datas)
+    df = df.set_index('Date')
+    df = df.transpose().reset_index()
 
     if not df is None:
         output = make_response(df.to_csv(index=False, decimal=','))
