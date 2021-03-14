@@ -4,7 +4,7 @@ import pandas as pd
 from flask import Flask, request, jsonify, make_response, render_template
 app = Flask(__name__)
 
-@app.route('/yfinance/<option>/<share>/', methods=['GET'])
+@app.route('/info/<share>/<option>/', methods=['GET'])
 def yfinance(option, share):
 
     tick = yf.Ticker(share)
@@ -17,15 +17,21 @@ def yfinance(option, share):
 
     return output
 
-@app.route('/yahoofinancials/<share>/', methods=['GET'])
-def yahoofinancials(share):
+@app.route('/financials/<share>/', methods=['GET'])
+def financials(share):
 
     yahoo_financials = YahooFinancials(share)
     tf = request.args.get('timeframe')
     type = request.args.get('type')
 
+    data = {
+        'income': 'incomeStatementHistory',
+        'balance': 'balanceSheetHistory',
+        'cash': 'cashflowStatementHistory',
+    }
+
     income_statement_data_qt = yahoo_financials.get_financial_stmts(tf, type)
-    datas = income_statement_data_qt['incomeStatementHistory'][share]
+    datas = income_statement_data_qt[data[type]][share]
     datas = [dict(x[y], **{'Date': y}) for x in datas for y in x]
     df = pd.DataFrame(datas)
 
