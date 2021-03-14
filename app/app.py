@@ -37,6 +37,7 @@ def financials(share):
             'totalRevenue': 'Total Revenue',
             'costOfRevenue': 'Cost of Revenue',
             'grossProfit': 'Gross Profit',
+            'operatingIncome': 'Operating Income',
         }}
     keep = [v for v in header[type]]
     print(keep)
