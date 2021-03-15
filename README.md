@@ -10,6 +10,9 @@ I deployed it on Heroku and runned with python 3.8. It's currently in active dev
 You can use 'https://gsheet-tracker.herokuapp.com' for testing purpose only. 
 Then you will need to install it on your own heroku. 
 
+Each function return a CSV, try it with:
+> https://gsheet-tracker.herokuapp.com/financials/AAPL/?timeframe=annual&type=income
+
 ### Financial datas:
 > =IMPORTDATA("https://gsheet-tracker.herokuapp.com/financials/AAPL/?timeframe=annual&type=income")
 
