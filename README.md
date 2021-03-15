@@ -7,9 +7,11 @@ I deployed it on Heroku and runned with python 3.8. It's currently in active dev
 > python run.py
 
 ## Google sheet integration
+You can use 'https://gsheet-tracker.herokuapp.com' for testing purpose only. 
+Then you will need to install it on your own heroku. 
 
 ### Financial datas:
-> =IMPORTDATA("https://<myapp>.herokuapp.com/financials/AAPL/?timeframe=annual&type=income")
+> =IMPORTDATA("https://gsheet-tracker.herokuapp.com/financials/AAPL/?timeframe=annual&type=income")
 
 | Date             | 31/12/2020         | 31/12/2019         | 31/12/2018         | 31/12/2017         |
 |------------------|--------------------|--------------------|--------------------|--------------------|
@@ -18,8 +20,8 @@ I deployed it on Heroku and runned with python 3.8. It's currently in active dev
 | **Gross Profit**    | 6 588 000 000 €    | 10 505 000 000 €   | 8 954 000 000 €    | 6 873 000 000 €    |
 | **Operating Income** | 1 590 000 000 €    | 1 022 000 000 €    | 3 302 000 000 €    | 1 627 000 000 €    |
 ### Holders:
-> =importdata("https://<myapp>.herokuapp.com/info/AAPL/major_holders/")
-> =importdata("https://<myapp>-tracker.herokuapp.com/info/AAPL/institutional_holders/")
+> =importdata("https://gsheet-tracker.herokuapp.com/info/AAPL/major_holders/")
+> =importdata("https://gsheet-tracker.herokuapp.com/info/AAPL/institutional_holders/")
 > 
 |||
 |--------|---------------------------------------|
