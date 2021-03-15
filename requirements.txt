@@ -1,6 +1,4 @@
-django
 gunicorn
-django-heroku
 requests
 flask
 yfinance
