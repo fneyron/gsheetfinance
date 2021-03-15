@@ -59,7 +59,6 @@ def financials(share):
 
     return output
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
