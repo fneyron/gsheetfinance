@@ -7,7 +7,7 @@ I deployed it on Heroku and runned with python 3.8. It's currently in active dev
 > python run.py
 
 ## Google sheet integration
-You can use 'https://gsheet-tracker.herokuapp.com' for testing purpose only. 
+You can use https://gsheet-tracker.herokuapp.com for testing purpose only. 
 Then you will need to install it on your own heroku. 
 
 Each function return a CSV, try it with:

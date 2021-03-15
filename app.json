@@ -1,22 +1,7 @@
 {
-  "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be deployed to Heroku.",
+  "name": "gsheetfinance",
+  "description": "Tool to get all python datas from package yfinance, yahoofinancials, etc. to google sheet.",
   "image": "heroku/python",
-  "repository": "https://github.com/heroku/python-getting-started",
-  "keywords": ["python", "django" ],
-  "addons": [ "heroku-postgresql" ],
-  "env": {
-    "SECRET_KEY": {
-      "description": "The secret key for the Django application.",
-      "generator": "secret"
-    }
-  },
-  "environments": {
-    "test": {
-      "scripts": {
-        "test-setup": "python manage.py collectstatic --noinput",
-        "test": "python manage.py test"
-      }
-    }
-  }
+  "repository": "https://github.com/fneyron/gsheetfinance",
+  "keywords": ["python", "flask" ]
 }
