@@ -1,63 +1,53 @@
 import yfinance as yf
-from yahoofinancials import YahooFinancials
 import pandas as pd
+import os
+import json
 from flask import Flask, request, jsonify, make_response, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/info/<share>/<option>/', methods=['GET'])
-def yfinance(option, share):
-    tick = yf.Ticker(share)
-    df = getattr(tick, option)
-    if not df is None:
-        output = make_response(df.to_csv(header=False, index=False, decimal=','))
-        output.headers["Content-Disposition"] = "attachment; filename=export.csv"
-        output.headers["Content-type"] = "text/csv"
-    else:
-        output = "Error with %s function on %s ticker" % (option, share)
-
-    return output
+@app.route('/info/<symbol>/<option>/', methods=['GET'])
+def yfinance(symbol, option):
+    tick = yf.Ticker(symbol)
+    info = tick.info
+    try:
+        if not info is None:
+            return info[option]
+    except:
+        return info
 
 
-@app.route('/financials/<share>/', methods=['GET'])
-def financials(share):
-    yahoo_financials = YahooFinancials(share)
-    tf = request.args.get('timeframe')
+@app.route('/financials/<symbol>/', methods=['GET'])
+def financials(symbol):
     type = request.args.get('type')
-
-    fin_data = {
-        'income': 'incomeStatementHistory',
-        'balance': 'balanceSheetHistory',
-        'cash': 'cashflowStatementHistory',
+    data = {
+        'income': 'financials',
+        'balance': 'balance_sheet',
+        'cash': 'cashflow',
     }
+    #diff = ['TotalRevenue', 'CostOfRevenue', 'GrossProfit']
+    df: pd.DataFrame = getattr(yf.Ticker(symbol), data[type])
+    df.index = df.index.str.replace(' ', '')
 
-    header = {'income':
-        {
-            'totalRevenue': 'Total Revenue',
-            'costOfRevenue': 'Cost of Revenue',
-            'grossProfit': 'Gross Profit',
-            'operatingIncome': 'Operating Income',
-        }}
-    keep = [v for v in header[type]]
-    print(keep)
+    df = df.transpose()
+    for d in df:
+            df[d + 'Perf'] = (df[d] - df[d].shift(-1)) / df[d].shift(-1)
+    if type == 'income':
+        df['OperatingExpenses'] = df['TotalOperatingExpenses'] - df['CostOfRevenue']
+    df = df.transpose()
 
-    datas = yahoo_financials.get_financial_stmts(tf, type)
-    datas = datas[fin_data[type]][share]
-    datas = [dict(x[y], **{'date': y}) for x in datas for y in x]
-    df = pd.DataFrame(datas)
-    df = df.set_index('date')
-    df = df[keep]
-    df = df.rename(columns=header[type]).transpose()
     print(df)
+
     if not df is None:
-        output = make_response(df.to_csv(index=True, index_label='Date', decimal=','))
+        output = make_response(df.to_csv(decimal=','))
         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
         output.headers["Content-type"] = "text/csv"
     else:
-        output = "Error with %s ticker options : %s" % (share, request.args)
+        output = "Error with %s function on %s ticker" % (type, symbol)
 
     return output
+
 
 @app.route('/')
 def index():

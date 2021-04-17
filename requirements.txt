@@ -1,6 +1,5 @@
 gunicorn
 requests
 flask
-yfinance
+git+https://github.com/ranaroussi/yfinance.git
 panda
-yahoofinancials
