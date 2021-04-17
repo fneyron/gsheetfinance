@@ -37,10 +37,11 @@ def financials(symbol):
         df['OperatingExpenses'] = df['TotalOperatingExpenses'] - df['CostOfRevenue']
     df = df.transpose()
 
+
     print(df)
 
     if not df is None:
-        output = make_response(df.to_csv(decimal=','))
+        output = make_response(df.to_csv())
         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
         output.headers["Content-type"] = "text/csv"
     else:
