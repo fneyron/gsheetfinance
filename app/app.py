@@ -30,12 +30,12 @@ def financials(symbol):
     df: pd.DataFrame = getattr(yf.Ticker(symbol), data[type])
     df.index = df.index.str.replace(' ', '')
 
-    df = df.transpose()
+    #df = df.transpose()
     #for d in df:
             #df[d + 'Perf'] = (df[d] - df[d].shift(-1)) / df[d].shift(-1)
-    if type == 'income':
-        df['OperatingExpenses'] = df['TotalOperatingExpenses'] - df['CostOfRevenue']
-    df = df.transpose()
+    #if type == 'income':
+    #    df['OperatingExpenses'] = df['TotalOperatingExpenses'] - df['CostOfRevenue']
+    #df = df.transpose()
 
 
     print(df)
