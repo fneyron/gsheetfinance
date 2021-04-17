@@ -31,8 +31,8 @@ def financials(symbol):
     df.index = df.index.str.replace(' ', '')
 
     df = df.transpose()
-    for d in df:
-            df[d + 'Perf'] = (df[d] - df[d].shift(-1)) / df[d].shift(-1)
+    #for d in df:
+            #df[d + 'Perf'] = (df[d] - df[d].shift(-1)) / df[d].shift(-1)
     if type == 'income':
         df['OperatingExpenses'] = df['TotalOperatingExpenses'] - df['CostOfRevenue']
     df = df.transpose()
