@@ -22,7 +22,7 @@ def yfinance(symbol):
 @app.route('/financials/<symbol>/', methods=['GET'])
 def financials(symbol):
     type = request.args.get('type')
-    if request.args.get('tf').lower == "quarterly":
+    if request.args.get('tf').lower() == "quarterly":
         tf = "quarterly_"
     else: tf = ""
 
