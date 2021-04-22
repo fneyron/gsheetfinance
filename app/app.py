@@ -7,27 +7,32 @@ from flask import Flask, request, jsonify, make_response, render_template
 app = Flask(__name__)
 
 
-@app.route('/info/<symbol>/<option>/', methods=['GET'])
-def yfinance(symbol, option):
+@app.route('/info/<symbol>/', methods=['GET'])
+def yfinance(symbol):
     tick = yf.Ticker(symbol)
-    info = tick.info
-    try:
-        if not info is None:
-            return info[option]
-    except:
-        return info
-
+    df = pd.DataFrame.from_dict(tick.info, orient='index')
+    if not df is None:
+        output = make_response(df.to_csv(header=False))
+        output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+        output.headers["Content-type"] = "text/csv"
+    else:
+        output = "Error with %s function on %s ticker" % (type, symbol)
+    return output
 
 @app.route('/financials/<symbol>/', methods=['GET'])
 def financials(symbol):
     type = request.args.get('type')
+    if request.args.get('tf') == "quarterly":
+        tf = "quarterly_"
+    else: tf = ""
+
     data = {
         'income': 'financials',
         'balance': 'balance_sheet',
         'cash': 'cashflow',
     }
     #diff = ['TotalRevenue', 'CostOfRevenue', 'GrossProfit']
-    df: pd.DataFrame = getattr(yf.Ticker(symbol), data[type])
+    df: pd.DataFrame = getattr(yf.Ticker(symbol), tf+data[type])
     df.index = df.index.str.replace(' ', '')
 
     #df = df.transpose()
