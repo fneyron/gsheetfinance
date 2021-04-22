@@ -14,8 +14,8 @@ Each function return a CSV, try it with:
 > https://gsheet-tracker.herokuapp.com/financials/AAPL/?timeframe=annual&type=income
 
 ### Financial datas:
-> =IMPORTDATA("https://gsheet-tracker.herokuapp.com/financials/AAPL/?timeframe=annual&type=income")
-
+> =IMPORTDATA("https://gsheet-tracker.herokuapp.com/financials/AAPL?type=income&tf=quarterly")
+> =IMPORTDATA("https://gsheet-tracker.herokuapp.com/financials/AAPL?type=income&tf=annual")
 | Date             | 31/12/2020         | 31/12/2019         | 31/12/2018         | 31/12/2017         |
 |------------------|--------------------|--------------------|--------------------|--------------------|
 | **Total Revenue**    | 49 912 000 000 €   | 70 478 000 000 €   | 63 707 000 000 €   | 59 022 000 000 €   |
