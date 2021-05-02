@@ -33,8 +33,8 @@ def financials(symbol):
     }
     #diff = ['TotalRevenue', 'CostOfRevenue', 'GrossProfit']
     df: pd.DataFrame = getattr(yf.Ticker(symbol), tf+data[type])
+    df = df[df.columns[::-1]]
     df.index = df.index.str.replace(' ', '')
-
     #df = df.transpose()
     #for d in df:
             #df[d + 'Perf'] = (df[d] - df[d].shift(-1)) / df[d].shift(-1)
