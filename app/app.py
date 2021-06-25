@@ -1,11 +1,34 @@
 import yfinance as yf
 import pandas as pd
+from pytrends.request import TrendReq
 import os
 import json
 from flask import Flask, request, jsonify, make_response, render_template
 
 app = Flask(__name__)
 
+@app.route('/pytrend', methods=['GET'])
+def pytrend():
+    pytrends = TrendReq(hl='en-US', tz=360, retries=2, backoff_factor=0.1, requests_args={'verify': False},
+                        timeout=(10, 25))
+    kw_list = [request.args.get('string')]
+    if request.args.get('tf') is not None:
+        tf = request.args.get('tf')
+    else:
+        tf = "today 12-m"
+    pytrends.build_payload(kw_list, cat=0, timeframe=tf, geo='', gprop='')
+    df = pytrends.interest_over_time().reset_index()
+
+    print(df)
+
+    if not df is None:
+        output = make_response(df.to_csv(index=False))
+        output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+        output.headers["Content-type"] = "text/csv"
+    else:
+        output = "Error with pytrend function"
+
+    return output
 
 @app.route('/info/<symbol>/', methods=['GET'])
 def yfinance(symbol):

@@ -3,3 +3,4 @@ requests
 flask
 git+https://github.com/ranaroussi/yfinance.git
 panda
+git+git://github.com/GeneralMills/pytrends.git
