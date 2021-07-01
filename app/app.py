@@ -1,9 +1,14 @@
 import yfinance as yf
 import pandas as pd
 from pytrends.request import TrendReq
+from dateutil.relativedelta import relativedelta
+import datetime
 import os
 import json
 from flask import Flask, request, jsonify, make_response, render_template
+
+os.environ['HTTP_PROXY'] = "http://172.16.99.9:3129"
+os.environ['HTTPS_PROXY'] = "http://172.16.99.9:3129"
 
 app = Flask(__name__)
 
@@ -66,6 +71,16 @@ def financials(symbol):
     #df = df.transpose()
 
 
+
+    ## In case there is less than 4 columns results we add the missing one
+    last_date = df.columns[len(df.columns) - 1]
+    if len(df.columns) < 5:
+        id_col = 5-len(df.columns)
+        for i in range(0, id_col-1):
+            print(i)
+            date = last_date.replace(year=last_date.year - (5-(i+2)))
+            print(date)
+            df.insert(i, date, None)
     print(df)
 
     if not df is None:
