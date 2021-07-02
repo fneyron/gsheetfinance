@@ -38,7 +38,6 @@ def pytrend():
 @app.route('/info/<symbol>/', methods=['GET'])
 def yfinance(symbol):
     tick = yf.Ticker(symbol)
-    print(tick.info)
     df = pd.DataFrame.from_dict(tick.info, orient='index')
     if not df is None:
         output = make_response(df.to_csv(header=False))
