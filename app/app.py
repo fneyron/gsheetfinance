@@ -7,8 +7,8 @@ import os
 import json
 from flask import Flask, request, jsonify, make_response, render_template
 
-os.environ['HTTP_PROXY'] = "http://172.16.99.9:3129"
-os.environ['HTTPS_PROXY'] = "http://172.16.99.9:3129"
+#os.environ['HTTP_PROXY'] = "http://172.16.99.9:3129"
+#os.environ['HTTPS_PROXY'] = "http://172.16.99.9:3129"
 
 app = Flask(__name__)
 
@@ -38,6 +38,7 @@ def pytrend():
 @app.route('/info/<symbol>/', methods=['GET'])
 def yfinance(symbol):
     tick = yf.Ticker(symbol)
+    print(tick.info)
     df = pd.DataFrame.from_dict(tick.info, orient='index')
     if not df is None:
         output = make_response(df.to_csv(header=False))
