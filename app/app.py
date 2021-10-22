@@ -40,7 +40,7 @@ def yfinance(symbol):
     tick = yf.Ticker(symbol)
     df = pd.DataFrame.from_dict(tick.info, orient='index')
     if not df is None:
-        output = make_response(df.to_csv(header=False))
+        output = make_response(df.to_json(header=False))
         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
         output.headers["Content-type"] = "text/csv"
     else:
@@ -84,7 +84,7 @@ def financials(symbol):
     print(df)
 
     if not df is None:
-        output = make_response(df.to_csv())
+        output = make_response(df.to_json())
         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
         output.headers["Content-type"] = "text/csv"
     else:
