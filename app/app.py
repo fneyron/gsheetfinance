@@ -1,16 +1,30 @@
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
+from flask import Flask, request, make_response, jsonify
+from forex_python.converter import CurrencyRates
+from datetime import datetime
 from pytrends.request import TrendReq
-from dateutil.relativedelta import relativedelta
-import datetime
-import os
-import json
-from flask import Flask, request, jsonify, make_response, render_template
-
-#os.environ['HTTP_PROXY'] = "http://172.16.99.9:3129"
-#os.environ['HTTPS_PROXY'] = "http://172.16.99.9:3129"
 
 app = Flask(__name__)
+
+def df_to_csv(df):
+    if not df is None:
+        output = make_response(df.to_csv(index=False))
+        output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+        output.headers["Content-type"] = "text/csv"
+    else:
+        output = "Error with pytrend function"
+
+    return output
+
+@app.route('/fx/<symbol>/historical', methods=['GET'])
+def fx_historical(symbol):
+    c = CurrencyRates()
+    date = datetime.strptime(request.args.get("date"),"%d-%m-%Y")
+    exchange_rate = c.get_rate(symbol[:3], symbol[3:], date)
+
+    return make_response(jsonify(exchange_rate))
+
 
 @app.route('/pytrend', methods=['GET'])
 def pytrend():
@@ -24,8 +38,6 @@ def pytrend():
     pytrends.build_payload(kw_list, cat=0, timeframe=tf, geo='', gprop='')
     df = pytrends.interest_over_time().reset_index()
 
-    print(df)
-
     if not df is None:
         output = make_response(df.to_csv(index=False))
         output.headers["Content-Disposition"] = "attachment; filename=export.csv"
@@ -35,7 +47,7 @@ def pytrend():
 
     return output
 
-@app.route('/info/<symbol>/', methods=['GET'])
+@app.route('/stock/<symbol>/', methods=['GET'])
 def yfinance(symbol):
     tick = yf.Ticker(symbol)
     df = pd.DataFrame.from_dict(tick.info, orient='index')
@@ -93,6 +105,6 @@ def financials(symbol):
     return output
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# @app.route('/')
+# def index():
+#     return render_template('index.html')

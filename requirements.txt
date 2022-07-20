@@ -4,3 +4,4 @@ flask
 yfinance
 panda
 pytrends
+forex-python
